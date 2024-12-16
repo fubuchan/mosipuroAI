@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- 
+      This is an HTML comment
+      You can write text in a comment and the content won't be visible in the page
+    -->
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Websocket example</title>
+    <style>
+    body {
+      display: flex;
+      justify-content: right;
+      align-items: right;
+      height: 100vh;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+    .vertical-text {
+      writing-mode: vertical-rl; /* 縦書きモード */
+      text-orientation: upright; /* 縦方向の文字向き */
+      font-size: 20px;
+      line-height: 1.8;
+    }
+    .break {
+      display: block; /* 改行を有効にする */
+    }
+    #description {
+        font-size: 12px;
+       font-weight: 600;
+        line-height: 1.6;
+        text-align: left;
+        margin-bottom: 20px;
+        margin-left: 1px;
+        white-space: pre-line; /* 改行文字を反映 */
+        word-wrap: break-word; /* 長い単語も折り返す */
+    }
+
+    #image {
+        width: 700px;
+        height: auto;
+        display: block;
+        text-align: left; /* 中央に配置 */
+    }
+  </style>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/fubuscript.js" defer>
+      (function(d) {
+    var config = {
+      kitId: 'lfv8kur',
+      scriptTimeout: 3000,
+      async: true
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+    </script>
+  </head>
+  <body>
+    <div class="vertical-text">
+    <h1>
+    もし、あなたが<span class="break">プロレスを</span>やったら。
+    </h1>
+ 　 </div>
+    <div class="image-description-container">
+    <!-- ここに技の説明文を表示 -->
+    <img id="image" src="image_url" alt="" style="width: 700px; height: 700px; display:none;" /> <!-- 画像の表示エリア -->
+   <div id="description" ></div>
+    </div>
+    <div id="character-options"></div>
+    <div>
+    <h5>あなたの年齢を教えてください。</h5>
+    <input type="range" min="0" max="116" value="25" class="age_slider"  oninput="document.getElementById('age-output').textContent = this.value"/>
+    <span id="age-output">25</span>歳
+    </div>
+    <div>
+    <h3>普段の運動頻度を教えてください。</h3>
+    <input type="radio" name="active"  class="none_radio" value="0" onchange="updateRadioValue(this)" data-label="全く運動しない"/>
+    <input type="radio" name="active"  class="health_radio" value="0" onchange="updateRadioValue(this)" data-label="健康維持程度"/>
+    <input type="radio" name="active"  class="power_radio" value="0" onchange="updateRadioValue(this)" data-label="力持ち"/>
+    <input type="radio" name="active"  class="athlete_radio" value="0" onchange="updateRadioValue(this)" data-label="トップアスリート"/>
+    
+  </div>
+    <h3>あなたはどんな人ですか？</h3>
+  <div style="display:none;">
+    <input type="radio" name="chara"  class="hihi_radio" value="0" onchange="updateRadioValue2(this)" data-label="ハイハイが苦手"/>
+    <input type="radio" name="chara"  class="cry_radio" value="0" onchange="updateRadioValue2(this)" data-label="よく泣いちゃう"/>
+    <input type="radio" name="chara"  class="baby_radio" value="0" onchange="updateRadioValue2(this)" data-label="いうことを聞かない"/>
+  </div>
+  <div style="display:none;">
+    <input type="radio" name="chara"  class="yancha_radio" value="0" onchange="updateRadioValue2(this)" data-label="やんちゃ"/>
+    <input type="radio" name="chara"  class="jyuken_radio" value="0" onchange="updateRadioValue2(this)" data-label="お受験組"/>
+    <input type="radio" name="chara"  class="tear_radio" value="0" onchange="updateRadioValue2(this)" data-label="泣き虫"/>
+ </div>
+  <div style="display:none;">
+    <input type="radio" name="chara"  class="hana_radio" value="0" onchange="updateRadioValue2(this)" data-label="ハナタレ小僧"/>
+    <input type="radio" name="chara"  class="sports_radio" value="0" onchange="updateRadioValue2(this)" data-label="スポーツ好き"/>
+    <input type="radio" name="chara"  class="instagirl_radio" value="0" onchange="updateRadioValue2(this)" data-label="インスタグラマー"/>
+    <input type="radio" name="chara"  class="otaku_radio" value="0" onchange="updateRadioValue2(this)" data-label="オタク気質"/>
+    <input type="radio" name="chara"  class="benkyo_radio" value="0" onchange="updateRadioValue2(this)" data-label="ガリ勉"/>
+    <input type="radio" name="chara"  class="h_radio" value="0" onchange="updateRadioValue2(this)" data-label="むっつりスケベ"/>
+  </div>
+  <div style="display:none;">
+    <input type="radio" name="chara"  class="hiyokko_radio" value="0" onchange="updateRadioValue2(this)" data-label="ひよっこ"/>
+    <input type="radio" name="chara"  class="parttimer_radio" value="0" onchange="updateRadioValue2(this)" data-label="バイト人間"/>
+    <input type="radio" name="chara"  class="gal_radio" value="0" onchange="updateRadioValue2(this)" data-label="ギャル"/>
+    <input type="radio" name="chara"  class="nomoney_radio" value="0" onchange="updateRadioValue2(this)" data-label="すっからかん"/>
+    <input type="radio" name="chara"  class="home_radio" value="0" onchange="updateRadioValue2(this)" data-label="自宅警備員"/>
+    <input type="radio" name="chara"  class="guy_radio" value="0" onchange="updateRadioValue2(this)" data-label="いい人"/>
+  </div>
+  <div style="display:none;">
+    <input type="radio" name="chara"  class="jyakuhai_radio" value="0" onchange="updateRadioValue2(this)" data-label="若輩者"/>
+    <input type="radio" name="chara"  class="salaryman_radio" value="0" onchange="updateRadioValue2(this)" data-label="サラリーマン"/>
+    <input type="radio" name="chara"  class="ronpa_radio" value="0" onchange="updateRadioValue2(this)" data-label="論破しがち"/>
+    <input type="radio" name="chara"  class="stress_radio" value="0" onchange="updateRadioValue2(this)" data-label="情緒不安定"/>
+    <input type="radio" name="chara"  class="gumble_radio" value="0" onchange="updateRadioValue2(this)" data-label="ギャンブラー"/>
+    <input type="radio" name="chara"  class="dream_radio" value="0" onchange="updateRadioValue2(this)" data-label="夢追う人"/>
+ </div>
+  <div style="display:none;">
+    <input type="radio" name="chara"  class="sinkei_radio" value="0" onchange="updateRadioValue2(this)" data-label="超神経質"/>
+    <input type="radio" name="chara"  class="tufu_radio" value="0" onchange="updateRadioValue2(this)" data-label="痛風気味"/>
+    <input type="radio" name="chara"  class="parents_radio" value="0" onchange="updateRadioValue2(this)" data-label="育児奮闘中"/>
+    <input type="radio" name="chara"  class="digital_radio" value="0" onchange="updateRadioValue2(this)" data-label="デジタルクリエイター"/>
+    <input type="radio" name="chara"  class="copy_radio" value="0" onchange="updateRadioValue2(this)" data-label="コピーライター"/>
+    <input type="radio" name="chara"  class="designer_radio" value="0" onchange="updateRadioValue2(this)" data-label="デザイナー"/>
+  </div>
+  <div style="display:none;">
+    <input type="radio" name="chara"  class="ogosyo_radio" value="0" onchange="updateRadioValue2(this)" data-label="大御所"/>
+    <input type="radio" name="chara"  class="jinji_radio" value="0" onchange="updateRadioValue2(this)" data-label="広告代理店人事"/>
+    <input type="radio" name="chara"  class="wresler_radio" value="0" onchange="updateRadioValue2(this)" data-label="現役プロレスラー"/>
+    <input type="radio" name="chara"  class="spiritual_radio" value="0" onchange="updateRadioValue2(this)" data-label="スピリチュアル信仰"/>
+    <input type="radio" name="chara"  class="bukiyo_radio" value="0" onchange="updateRadioValue2(this)" data-label="不器用な上司"/>
+    <input type="radio" name="chara"  class="mago_radio" value="0" onchange="updateRadioValue2(this)" data-label="もう孫ができた"/>
+  </div>
+  <div style="display:none;">
+    <input type="radio" name="chara"  class="VIP_radio" value="0" onchange="updateRadioValue2(this)" data-label="VIP"/>
+    <input type="radio" name="chara"  class="rogo_radio" value="0" onchange="updateRadioValue2(this)" data-label="老後のお金が心配"/>
+    <input type="radio" name="chara"  class="rogan_radio" value="0" onchange="updateRadioValue2(this)" data-label="老眼"/>
+    <input type="radio" name="chara"  class="kaigo_radio" value="0" onchange="updateRadioValue2(this)" data-label="介護が必要"/>
+    <input type="radio" name="chara"  class="seki_radio" value="0" onchange="updateRadioValue2(this)" data-label="咳が止まらない"/>
+  </div>
+  <div style="display:none;">
+    <input type="radio" name="chara"  class="kioku_radio" value="0" onchange="updateRadioValue2(this)" data-label="ボケてきた"/>
+    <input type="radio" name="chara"  class="ill_radio" value="0" onchange="updateRadioValue2(this)" data-label="病気になった"/>
+    <input type="radio" name="chara"  class="car_radio" value="0" onchange="updateRadioValue2(this)" data-label="車いす生活"/>
+  </div>
+  <div style="display:none;">
+    <input type="radio" name="chara"  class="sleep_radio" value="0" onchange="updateRadioValue2(this)" data-label="ずっと寝たきり"/>
+    <input type="radio" name="chara"  class="tooth_radio" value="0" onchange="updateRadioValue2(this)" data-label="歯がない"/>
+    <input type="radio" name="chara"  class="heaven_radio" value="0" onchange="updateRadioValue2(this)" data-label="天国にいる"/>
+  </div>
+  <input type="button" name="enter" class="enter" value="プロレスをする" onclick="toggleEnterValue()"/>
+ 
+  <h2>コンプレックスを、スープレックスに。</h2>
+    <h6>※スープレックス（Suplex）は、プロレスの技の一つで、相手を自分の体を使って持ち上げ、背中からマットに叩きつける技です。</h6>
+  <h4>プロレスには「筋肉がぶつかり合う力の競技」というイメージがあると思います。<span class="break">しかし、体はガリガリ、懸垂は一回もできない僕が5年間プロレスを続けた結果、もう一つの魅力を見つけました。</span><span class="break">　</span><span class="break">それは「どんな個性も輝けるスポーツであること」です。</span><span class="break">　</span><span class="break">プロレスは元々、勝ち負けではなくお客さんを楽しませるためのスポーツです。</span><span class="break">レスラーのキャラクターも大事な要素の一つ。</span><span class="break">ヒーローに悪役、学生からおじいちゃんまで色んなレスラーがいます。</span><span class="break">笑いと熱狂を生み出しているのは彼らのキャラクターと唯一無二の得意技です。</span><span class="break"><span class="break">　</span>もし、私たちにも得意技があったら。</span><span class="break">　</span><span class="break">私たちのどんな性格も、プロレス技にしてしまえば、それがレスラーの絶対的な魅力になると思っています。</span><span class="break">みんなが自分の個性を好きになれるように、自分にぴったりのプロレス技をAIが考えてくれるサービスを作りました。</span><span class="break">　</span><span class="break">安全に配慮した技もいっぱいあります。</span><span class="break">ぜひ実践してみてください。</span></h4>
+    
+  </body>
+</html>

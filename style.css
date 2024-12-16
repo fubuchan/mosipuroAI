@@ -1,0 +1,307 @@
+:root {
+  --color-bg: #FFFFFF;
+  --color-text-main: #333333;
+  --color-primary: #000000;
+  --color-secondary: #BBBBBB;
+  --color-slider-track: #E0E0E0;
+  --color-slider-thumb: #000000;
+  --color-radio-border: #333333;
+  --color-radio-checked: #000000;
+  --font-family: "Source Han Serif", serif;
+  --slider-height: 14px; /* スライダーの高さ */
+  --slider-thumb-size: 24px; /* スライダーつまみのサイズ */
+  --radio-button-width: 175px; /* ラジオボタンの幅を大きく */
+  --radio-button-height: 48px; /* ラジオボタンの高さを大きく */
+  --radio-border-radius: 10px; /* ラジオボタンの角丸 */
+  --layout-padding: 2rem;
+  --content-spacing: 3rem; /* ラベルとコンテンツ間の余白を拡大 */
+  --heading-font-size: 1.1rem; /* h2のフォントサイズをさらに小さく */
+  --label-spacing: 2rem;
+}
+
+
+/* 全体レイアウト */
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  margin: 0;
+  padding: var(--layout-padding);
+  padding-left: 5rem;
+  line-height: 1.6;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  text-align: left;
+  flex-direction: column;
+  overflow: hidden; /* スクロールを隠す */
+
+}
+.image-description-container {
+  position: relative; /* 画像の上に重ねるために必要 */
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+  align-self: left; /* ラジオボタン・スライダーと高さを揃える */
+  align-items: center;
+  gap: 1.5rem; /* 画像と説明文の間隔 */
+}
+
+.image-description-container img {
+  width: 100%; /* 画像をコンテナの幅に合わせる */
+  height: auto;
+  border: 1px solid var(--color-secondary);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0); /* 画像に軽い影を追加 */
+}
+
+#description {
+  position: absolute;
+  top: 680px; /* 上端から150pxの位置に配置 */
+  left: 0;
+  width: 900px;
+  padding: 1rem 2rem;
+  background-color: rgba(255, 255, 255, 1);
+  color: var(--color-text-main);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: left;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+  border-radius: 10px 10px 10px 10px;
+  display: none; /* 初期状態で非表示 */
+}
+
+
+#description.show {
+  display: block; /* 'show' クラスが追加されたときに表示 */
+}
+
+#description p:first-of-type {
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+
+/* h1のスタイル */
+h1 {
+  font-size: 5.2rem;
+  margin-bottom: var(--content-spacing);
+  margin-right: 5rem;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+  position: absolute;
+  top: 1.5rem;
+  right: 2.5rem; /* ブラウザ右端に配置 */
+}
+h5 {
+  font-size: var(--heading-font-size);
+  margin: 0;
+  white-space: nowrap; /* 改行を防止 */
+  margin-left: 1rem;
+  align-self: left; /* ラジオボタン・スライダーと高さを揃える */
+  flex-shrink: 0;
+  margin-bottom: 0.5rem; 
+  margin-top: 16rem;/* 上下間隔を追加 */
+  position: relative; /* アンダーバーの配置を設定するため */
+}
+
+h5::after {
+  content: "";
+  display: block;
+  height: 2px;
+  background-color: var(--color-primary);
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 300px; /* 長さを統一 */
+}
+
+/* h2のスタイル */
+h3 {
+  font-size: var(--heading-font-size);
+  margin: 0;
+  white-space: nowrap; /* 改行を防止 */
+  margin-left: 1rem;
+  align-self: left; /* ラジオボタン・スライダーと高さを揃える */
+  flex-shrink: 0;
+  margin-bottom: 0.5rem; 
+  margin-top: 5rem;/* 上下間隔を追加 */
+  position: relative; /* アンダーバーの配置を設定するため */
+}
+
+h3::after {
+  content: "";
+  display: block;
+  height: 2px;
+  background-color: var(--color-primary);
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 300px; /* 長さを統一 */
+}
+
+
+/* ラジオボタン */
+input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: var(--radio-button-width);
+  height: var(--radio-button-height);
+  border: 1.5px solid var(--color-radio-border);
+  border-radius: var(--radio-border-radius);
+  background: var(--color-bg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family);
+  font-size: 1.2rem;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+
+/* ラジオボタンのラベル */
+input[type="radio"]::before {
+  content: attr(data-label);
+  position: absolute;
+  font-size: 1rem;
+  color: var(--color-text-main);
+  font-weight: 600; 
+  pointer-events: none;
+  
+}
+
+/* ラジオボタン選択状態 */
+input[type="radio"]:checked {
+  border-color: var(--color-radio-checked);
+  background: var(--color-radio-checked);
+  color: #FFFFFF;
+}
+
+input[type="radio"]:checked::before {
+  color: #FFFFFF;
+}
+
+input[type="radio"]:hover {
+  box-shadow: 0 0 8px var(--color-secondary);
+}
+
+/* スライダー */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: calc(50vw); /* スライダーの幅を調整 */
+  height: var(--slider-height);
+  background: var(--color-slider-track);
+  border-radius: 4px;
+  outline: none;
+  margin-top: 2rem;
+  margin-left: 1rem; /* 左余白 */
+  margin-right: auto; /* 右側余白を自動で調整 */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: var(--slider-thumb-size);
+  height: var(--slider-thumb-size);
+  background: var(--color-slider-thumb);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* ラベルとコンテンツを横並びに */
+.row {
+  display: flex;
+  align-items: center; /* h2とコンテンツを同じ高さに */
+  margin-bottom: var(--content-spacing);
+}
+
+.row h3 {
+  margin-right: 1rem; /* ラベルとボタン間のスペース */
+}
+
+.row .content {
+  flex-grow: 1; /* ラジオボタンやスライダーを適切に配置 */
+  display: flex;
+  gap: 1.5rem; /* コンテンツ間の間隔を調整 */
+  align-items: center; /* 垂直方向で揃える */
+}
+
+/* h2のスタイル */
+h2 {
+  font-size: 3rem;  /* フォントサイズを大きく */
+  margin: 0;
+  white-space: nowrap; /* 改行を防止 */
+  align-self: left; /* ラジオボタン・スライダーと高さを揃える */
+  flex-shrink: 0;
+  margin-top: 20rem;
+  margin-bottom: 0.3rem;
+  margin-left: 1rem;/* 下の余白を増やして、下に配置 */
+}
+h6 {
+  font-size: 0.8rem;  /* フォントサイズを大きく */
+  margin: 0;
+  white-space: nowrap; /* 改行を防止 */
+  /* ラジオボタン・スライダーと高さを揃える */
+  flex-shrink: 0;
+  margin-bottom: 5rem; 
+  margin-left: 1.5rem;/* 下の余白を増やして、下に配置 */
+  line-height: 3;
+}
+h4 {
+  font-size: 1rem;  /* フォントサイズを大きく */
+  margin: 0;
+  white-space: nowrap; /* 改行を防止 */
+  /* ラジオボタン・スライダーと高さを揃える */
+  flex-shrink: 0;
+  margin-bottom: 5rem; 
+  margin-left: 1.1rem;/* 下の余白を増やして、下に配置 */
+  line-height: 2.5;
+}
+
+/* スクロール可能にする */
+html, body {
+  height: auto;
+  overflow-y: scroll;
+}
+/* ボタンのスタイル */
+.enter {
+  font-family: var(--font-family);
+  font-size: 1.4rem;
+  background-color: var(--color-primary);
+  color: #FFFFFF; /* テキスト色を白に */
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  position: fixed; /* 画面に固定 */
+  bottom: 30px; /* 画面下部からの距離 */
+  left: 50%; /* 中央に配置 */
+  transform: translateX(-50%); /* 中央に合わせるための調整 */
+  margin-bottom: 0; /* 余白をなくす */
+}
+
+.enter:hover {
+  background-color: var(--color-secondary);
+  transform: scale(1.1) translateX(-50%); /* 中央を保ったまま拡大 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
