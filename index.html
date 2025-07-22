@@ -7,6 +7,52 @@
     <title>Websocket example</title>
     <link rel="stylesheet" href="style.css" />
     <script src="fubuscript.js" defer></script>
+    body {
+      display: flex;
+      justify-content: right;
+      align-items: right;
+      height: 100vh;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+    .vertical-text {
+      writing-mode: vertical-rl; /* 縦書きモード */
+      text-orientation: upright; /* 縦方向の文字向き */
+      font-size: 20px;
+      line-height: 1.8;
+    }
+    .break {
+      display: block; /* 改行を有効にする */
+    }
+    #description {
+        font-size: 12px;
+       font-weight: 600;
+        line-height: 1.6;
+        text-align: left;
+        margin-bottom: 20px;
+        margin-left: 1px;
+        white-space: pre-line; /* 改行文字を反映 */
+        word-wrap: break-word; /* 長い単語も折り返す */
+    }
+
+    #image {
+        width: 700px;
+        height: auto;
+        display: block;
+        text-align: left; /* 中央に配置 */
+    }
+  </style>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/fubuscript.js" defer>
+      (function(d) {
+    var config = {
+      kitId: 'lfv8kur',
+      scriptTimeout: 3000,
+      async: true
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+    </script>
   </head>
   <body>
     <div class="vertical-text">
