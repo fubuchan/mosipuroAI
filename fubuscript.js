@@ -12,6 +12,12 @@ const radioKeys = [
   "car_radio", "sleep_radio", "tooth_radio", "heaven_radio"
 ];
 
+// 共有用：最新の生成結果を保持
+let latestResult = {
+  description: "",
+  image_url: ""
+};
+
 function updateRadioValue(radio) {
   const allRadios = document.querySelectorAll(`input[name="${radio.name}"]`);
   allRadios.forEach((r) => {
@@ -108,6 +114,60 @@ if (enter) {
   });
 }
 
+// ===== 共有（友だちに送る）機能 =====
+const shareBtn = document.getElementById('shareBtn');
+
+function buildShareText() {
+  const age = document.querySelector('.age_slider')?.value;
+  const desc =
+    latestResult.description ||
+    document.getElementById('description')?.innerText ||
+    "";
+
+  const header = age ? `${age}歳のあなたにぴったりのプロレス技` : `あなたにぴったりのプロレス技`;
+  return `${header}\n\n${desc}\n\n#AIプロレス技診断`;
+}
+
+async function shareToFriends() {
+  const text = buildShareText();
+  const url = window.location.href;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: 'AIプロレス技診断',
+        text,
+        url
+      });
+      return;
+    } catch (e) {
+      // キャンセルも含めてここに来る
+      console.log('share canceled/failed', e);
+    }
+  }
+
+  // フォールバック：コピー
+  const payload = `${text}\n${url}`;
+  try {
+    await navigator.clipboard.writeText(payload);
+    alert('共有文をコピーしました。LINEに貼り付けて送ってください。');
+  } catch (e) {
+    // さらに古い環境向け（念のため）
+    const ta = document.createElement('textarea');
+    ta.value = payload;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('共有文をコピーしました。LINEに貼り付けて送ってください。');
+  }
+}
+
+if (shareBtn) {
+  shareBtn.addEventListener('click', shareToFriends);
+}
+// ===== 共有ここまで =====
+
 ws.addEventListener('open', () => console.log('WebSocket opened'));
 ws.addEventListener('close', () => console.log('WebSocket closed'));
 ws.addEventListener('error', () => console.log('WebSocket error'));
@@ -138,12 +198,21 @@ ws.addEventListener('message', (message) => {
     }
   }
 
-  if (parsedData.description && parsedData.image_url) {
+  // descriptionだけ、image_urlだけ、片方だけ来ても反映・保存する
+  if (parsedData.description || parsedData.image_url) {
     const descriptionElement = document.querySelector('#description');
     const imageElement = document.querySelector('#image');
-    descriptionElement.innerText = parsedData.description;
-    imageElement.src = parsedData.image_url;
-    imageElement.style.display = parsedData.image_url ? 'block' : 'none';
+
+    if (parsedData.description) {
+      descriptionElement.innerText = parsedData.description;
+      latestResult.description = parsedData.description;
+    }
+
+    if (parsedData.image_url) {
+      imageElement.src = parsedData.image_url;
+      imageElement.style.display = 'block';
+      latestResult.image_url = parsedData.image_url;
+    }
   }
 
   console.log(parsedData);
